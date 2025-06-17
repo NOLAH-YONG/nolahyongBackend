@@ -32,14 +32,10 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                withCredentials([sshUserPrivateKey(
-                    credentialsId: 'backend-ssh',
-                    keyFileVariable: 'SSH_KEY',
-                    usernameVariable: 'SSH_USER'
-                )]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'backend-ssh', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     sh """
                     ssh -p 2222 -i \$SSH_KEY -o StrictHostKeyChecking=no \$SSH_USER@${REMOTE_HOST} 'mkdir -p ${REMOTE_PATH}'
-                    scp -P 2222 -i \$SSH_KEY -o StrictHostKeyChecking=no build/libs/*.jar \$SSH_USER@${REMOTE_HOST}:${REMOTE_PATH}/${JAR_NAME}
+                    scp -P 2222 -i \$SSH_KEY -o StrictHostKeyChecking=no build/libs/nolahyong-backend-0.0.1-SNAPSHOT.jar \$SSH_USER@${REMOTE_HOST}:${REMOTE_PATH}/${JAR_NAME}
                     ssh -p 2222 -i \$SSH_KEY -o StrictHostKeyChecking=no \$SSH_USER@${REMOTE_HOST} 'sudo systemctl restart tour-backend'
                     """
                 }
