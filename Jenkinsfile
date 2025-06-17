@@ -18,13 +18,14 @@ pipeline {
 
         stage('Test') {
             steps {
-                // 단위 테스트: 빌드 전에 실행 가능
+                sh 'chmod +x gradlew'
                 sh './gradlew test'
             }
         }
 
         stage('Build') {
             steps {
+                sh 'chmod +x gradlew'
                 sh './gradlew clean build'
             }
         }
