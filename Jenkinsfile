@@ -32,7 +32,6 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // SSH Credentials를 환경변수로 바인딩
                 withCredentials([sshUserPrivateKey(credentialsId: 'backend-ssh', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     sh """
                     scp -i \$SSH_KEY -o StrictHostKeyChecking=no build/libs/*.jar \$SSH_USER@${REMOTE_HOST}:${REMOTE_PATH}/${JAR_NAME}
