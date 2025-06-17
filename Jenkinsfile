@@ -18,8 +18,8 @@ pipeline {
 
         stage('Test') {
             steps {
+                // 단위 테스트: 빌드 전에 실행 가능
                 sh './gradlew test'
-                junit '**/build/test-results/test/*.xml'
             }
         }
 
