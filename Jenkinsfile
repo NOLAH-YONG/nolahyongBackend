@@ -1,21 +1,43 @@
 pipeline {
     agent any
+
+    environment {
+        REMOTE_HOST = '	10.10.1.6'
+        REMOTE_PATH = '/home/ubuntu/backend'
+        JAR_NAME = 'app.jar'
+    }
+
     stages {
-        stage('Prepare'){
+        stage('Checkout') {
             steps {
-                git credentialsId : 'tour_admin',
-                    branch : 'main',
-                    url : 'https://github.com/NOLAH-YONG/nolahyongBackend.git'
+                git credentialsId: 'tour_admin',
+                    branch: 'main',
+                    url: 'https://github.com/NOLAH-YONG/nolahyongBackend.git'
             }
         }
-        stage('test') {
+
+        stage('Test') {
             steps {
-                echo 'test stage'
+                sh './gradlew test'
+                junit '**/build/test-results/test/*.xml'
             }
         }
-        stage('build') {
+
+        stage('Build') {
             steps {
-                echo 'build stage'
+                sh './gradlew clean build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // SSH Credentials를 환경변수로 바인딩
+                withCredentials([sshUserPrivateKey(credentialsId: 'backend-ssh', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                    sh """
+                    scp -i \$SSH_KEY -o StrictHostKeyChecking=no build/libs/*.jar \$SSH_USER@${REMOTE_HOST}:${REMOTE_PATH}/${JAR_NAME}
+                    ssh -i \$SSH_KEY -o StrictHostKeyChecking=no \$SSH_USER@${REMOTE_HOST} 'sudo systemctl restart tour-backend'
+                    """
+                }
             }
         }
     }
