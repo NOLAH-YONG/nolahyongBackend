@@ -53,3 +53,14 @@ jwt:
   secret: ${SECRET}
   access-token-validity: 3600  # 1시간 (초)
   refresh-token-validity: 604800  # 7일 (초)
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    operations-sorter: method
+    tags-sorter: alpha
+    doc-expansion: none
+    filter: true
+  api-docs:
+    path: /v3/api-docs
