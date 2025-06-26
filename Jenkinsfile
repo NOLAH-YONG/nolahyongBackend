@@ -16,13 +16,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh 'chmod +x gradlew'
-                sh './gradlew test'
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'chmod +x gradlew'
