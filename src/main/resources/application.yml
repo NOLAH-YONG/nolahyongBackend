@@ -76,3 +76,7 @@ springdoc:
     filter: true
   api-docs:
     path: /v3/api-docs
+
+refresh:
+  token:
+    encryption-key: ${ENCRYPTION_KEY}
