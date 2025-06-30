@@ -1,10 +1,9 @@
 package com.nolahyong.nolahyong_backend.adapter.in.web.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 public class RefreshTokenRequest {
-    @NotBlank
     private String refreshToken;
 }

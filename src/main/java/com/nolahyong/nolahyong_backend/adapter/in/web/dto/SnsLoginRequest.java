@@ -3,9 +3,9 @@ package com.nolahyong.nolahyong_backend.adapter.in.web.dto;
 import lombok.*;
 
 @Getter
-@AllArgsConstructor
-public class TokenResponse {
+@Setter
+public class SnsLoginRequest {
+    private String provider;
     private String accessToken;
-    private String refreshToken;
-    private boolean isOnboarded;
+    private String deviceFingerprint;
 }
