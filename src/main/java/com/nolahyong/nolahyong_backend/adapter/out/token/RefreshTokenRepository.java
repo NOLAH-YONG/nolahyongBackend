@@ -18,6 +18,10 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity
 
     @Modifying
     @Transactional
+    void deleteByRefreshToken(String refreshToken);
+
+    @Modifying
+    @Transactional
     @Query("DELETE FROM RefreshTokenEntity r WHERE r.userId = :userId AND r.deviceFingerprint = :deviceFingerprint")
     void deleteByUserIdAndDeviceFingerprint(@Param("userId") UUID userId, @Param("deviceFingerprint") String deviceFingerprint);
 

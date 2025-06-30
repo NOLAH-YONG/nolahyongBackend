@@ -44,16 +44,16 @@ public class TokenService {
 
     private String buildToken(User user, long validity) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + validity * 1000);    // 추후 사용 예정?
+        Date expiryDate = new Date(now.getTime() + validity * 1000);
 
         return Jwts.builder()
                 .subject(user.getUserId().toString())
                 .claim("email", user.getEmail())
                 .claim("nickname", user.getNickname())
-                .claim("provider", user.getProvider().name())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + accessTokenValidity * 1000))
-                .signWith(secretKey, Jwts.SIG.HS512)
+                .claim("provider", user.getProvider().name()) // enum → string 변환
+                .issuedAt(now)
+                .expiration(expiryDate) // 계산된 만료 시간 사용
+                .signWith(secretKey) // 알고리즘 자동 감지
                 .compact();
     }
 
@@ -62,8 +62,7 @@ public class TokenService {
             Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+                    .parseSignedClaims(token);
             return true;
         } catch (Exception e) {
             log.error("Invalid JWT token: {}", e.getMessage());
@@ -79,5 +78,4 @@ public class TokenService {
                 .getPayload();
         return UUID.fromString(claims.getSubject());
     }
-
 }
