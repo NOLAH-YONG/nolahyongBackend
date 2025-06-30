@@ -1,5 +1,6 @@
 package com.nolahyong.nolahyong_backend.application.service;
 
+import com.nolahyong.nolahyong_backend.common.util.EncryptionUtil;
 import com.nolahyong.nolahyong_backend.domain.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,6 +25,9 @@ public class TokenService {
     @Getter
     private final long refreshTokenValidity;
 
+    @Value("${refresh.token.encryption-key}")
+    private String refreshTokenEncryptionKey;
+
     public TokenService(
             @Value("${jwt.secret}") String jwtSecret,
             @Value("${jwt.access-token-validity}") long accessTokenValidity,
@@ -42,6 +46,26 @@ public class TokenService {
         return buildToken(user, refreshTokenValidity);
     }
 
+    // refreshToken 암호화
+    public String encryptRefreshToken(String refreshToken) {
+        try {
+            return EncryptionUtil.encrypt(refreshTokenEncryptionKey, refreshToken);
+        } catch (Exception e) {
+            log.error("Refresh Token 암호화 실패", e);
+            throw new RuntimeException("Refresh Token 암호화 실패", e);
+        }
+    }
+
+    // refreshToken을 복호화
+    public String decryptRefreshToken(String encryptedRefreshToken) {
+        try {
+            return EncryptionUtil.decrypt(refreshTokenEncryptionKey, encryptedRefreshToken);
+        } catch (Exception e) {
+            log.error("Refresh Token 복호화 실패", e);
+            throw new RuntimeException("Refresh Token 복호화 실패", e);
+        }
+    }
+
     private String buildToken(User user, long validity) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + validity * 1000);
@@ -50,10 +74,10 @@ public class TokenService {
                 .subject(user.getUserId().toString())
                 .claim("email", user.getEmail())
                 .claim("nickname", user.getNickname())
-                .claim("provider", user.getProvider().name()) // enum → string 변환
+                .claim("provider", user.getProvider().name())
                 .issuedAt(now)
-                .expiration(expiryDate) // 계산된 만료 시간 사용
-                .signWith(secretKey) // 알고리즘 자동 감지
+                .expiration(expiryDate)
+                .signWith(secretKey)
                 .compact();
     }
 
