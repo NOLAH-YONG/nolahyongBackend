@@ -42,4 +42,8 @@ public class RefreshTokenService {
     public void deleteRefreshToken(UUID userId, String deviceFingerprint) {
         refreshTokenRepository.deleteByUserIdAndDeviceFingerprint(userId, deviceFingerprint);
     }
+
+    public void deleteByRefreshToken(String refreshToken) {
+        refreshTokenRepository.deleteByRefreshToken(refreshToken);
+    }
 }

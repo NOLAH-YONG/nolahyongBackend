@@ -1,6 +1,6 @@
 package com.nolahyong.nolahyong_backend.security;
 
-import com.nolahyong.nolahyong_backend.domain.model.AccountStatus;
+import com.nolahyong.nolahyong_backend.domain.model.enums.AccountStatus;
 import com.nolahyong.nolahyong_backend.domain.model.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
