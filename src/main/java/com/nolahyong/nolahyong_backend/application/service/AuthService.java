@@ -1,12 +1,16 @@
 package com.nolahyong.nolahyong_backend.application.service;
 
-import com.nolahyong.nolahyong_backend.adapter.in.web.dto.*;
+import com.nolahyong.nolahyong_backend.adapter.in.web.dto.LogoutRequest;
+import com.nolahyong.nolahyong_backend.adapter.in.web.dto.RefreshTokenRequest;
+import com.nolahyong.nolahyong_backend.adapter.in.web.dto.SnsLoginRequest;
+import com.nolahyong.nolahyong_backend.adapter.in.web.dto.TokenResponse;
+import com.nolahyong.nolahyong_backend.application.port.in.AuthUseCase;
+import com.nolahyong.nolahyong_backend.application.port.out.RefreshTokenPort;
 import com.nolahyong.nolahyong_backend.application.port.out.SocialAuthPort;
+import com.nolahyong.nolahyong_backend.application.port.out.TokenPort;
 import com.nolahyong.nolahyong_backend.domain.model.User;
 import com.nolahyong.nolahyong_backend.domain.model.UserToken;
 import com.nolahyong.nolahyong_backend.domain.repository.UserRepository;
-import com.nolahyong.nolahyong_backend.application.port.out.TokenPort;
-import com.nolahyong.nolahyong_backend.application.port.out.RefreshTokenPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +20,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthUseCase {
+public class AuthService implements AuthUseCase {
     private final SocialAuthPort socialAuthPort;
     private final TokenPort tokenPort;
     private final RefreshTokenPort refreshTokenPort;
     private final UserRepository userRepository;
 
-    /**
-     * Login
-     */
+    @Override
     @Transactional
     public TokenResponse socialLogin(SnsLoginRequest request) {
         User user = socialAuthPort.authenticate(
@@ -45,9 +47,7 @@ public class AuthUseCase {
         return new TokenResponse(accessToken, refreshToken, isOnboarded);
     }
 
-    /**
-     * refresh
-     */
+    @Override
     @Transactional
     public TokenResponse refreshTokens(RefreshTokenRequest request) {
         Optional<UserToken> tokenOpt = refreshTokenPort.findByRefreshToken(request.getRefreshToken());
@@ -71,9 +71,7 @@ public class AuthUseCase {
         return new TokenResponse(newAccessToken, newRefreshToken, user.isOnboarded());
     }
 
-    /**
-     * Logout
-     */
+    @Override
     @Transactional
     public void logout(LogoutRequest request) {
         refreshTokenPort.deleteByRefreshToken(request.getRefreshToken());
