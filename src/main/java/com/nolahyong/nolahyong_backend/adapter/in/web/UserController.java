@@ -1,7 +1,7 @@
 package com.nolahyong.nolahyong_backend.adapter.in.web;
 
 import com.nolahyong.nolahyong_backend.adapter.in.web.dto.UserProfileResponse;
-import com.nolahyong.nolahyong_backend.application.service.UserUseCase;
+import com.nolahyong.nolahyong_backend.application.port.in.UserUseCase;
 import com.nolahyong.nolahyong_backend.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
