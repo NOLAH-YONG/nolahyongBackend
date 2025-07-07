@@ -1,38 +1,39 @@
-package com.nolahyong.nolahyong_backend.application.service;
+package com.nolahyong.nolahyong_backend.adapter.out.social;
 
 import com.nolahyong.nolahyong_backend.application.dto.SocialUserInfo;
-import com.nolahyong.nolahyong_backend.application.service.social.SocialAuthProvider;
+import com.nolahyong.nolahyong_backend.application.port.out.SocialAuthPort;
+import com.nolahyong.nolahyong_backend.application.port.out.SocialAuthUserInfoPort;
 import com.nolahyong.nolahyong_backend.domain.model.User;
 import com.nolahyong.nolahyong_backend.domain.model.enums.Provider;
 import com.nolahyong.nolahyong_backend.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class SocialAuthService {
+public class SocialAuthAdapter implements SocialAuthPort {
 
-    private final Map<String, SocialAuthProvider> authProviders;
+    private final Map<String, SocialAuthUserInfoPort> authProviders;
     private final UserRepository userRepository;
 
+    @Override
     public User authenticate(String provider, String accessToken) {
-        // 1. provider 이름으로 SocialAuthProvider 구현체 조회
-        SocialAuthProvider authProvider = authProviders.get(provider.toLowerCase() + "AuthService");
+        // provider 이름을 소문자/대문자 통일, 빈 이름과 일치시킴
+        String beanName = provider.toLowerCase() + "SocialAuthAdapter";
+        SocialAuthUserInfoPort authProvider = authProviders.get(beanName);
         if (authProvider == null) {
             throw new IllegalArgumentException("Unsupported provider: " + provider);
         }
 
-        // 2. 해당 provider의 authenticate 메서드로 SocialUserInfo 조회
         SocialUserInfo userInfo = authProvider.authenticate(accessToken);
 
-        // 3. DB에서 사용자 찾거나 생성
         return findOrCreateUser(
                 userInfo.getEmail(),
                 userInfo.getNickname(),
-                userInfo.getProviderId(),  // ★ 핵심 변경: socialId → providerId
-                userInfo.getProvider()      // ★ provider 값도 함께 전달
+                userInfo.getProviderId(),
+                userInfo.getProvider()
         );
     }
 
@@ -43,7 +44,7 @@ public class SocialAuthService {
                                 .email(email)
                                 .nickname(nickname)
                                 .provider(provider)
-                                .providerId(providerId)  // ★ NOT NULL 필드 반드시 할당
+                                .providerId(providerId)
                                 .build()
                 ));
     }

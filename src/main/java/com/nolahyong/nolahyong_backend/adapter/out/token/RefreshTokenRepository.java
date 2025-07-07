@@ -1,5 +1,6 @@
 package com.nolahyong.nolahyong_backend.adapter.out.token;
 
+import com.nolahyong.nolahyong_backend.adapter.out.persistence.RefreshTokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,11 +15,7 @@ import java.util.UUID;
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity, UUID> {
 
-    Optional<RefreshTokenEntity> findByRefreshToken(String refreshToken);
-
-    @Modifying
-    @Transactional
-    void deleteByRefreshToken(String refreshToken);
+    Optional<RefreshTokenEntity> findByRefreshTokenEncrypted(String refreshTokenEncrypted);
 
     @Modifying
     @Transactional
@@ -27,8 +24,5 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM RefreshTokenEntity r WHERE r.expiresAt < :now")
-    void deleteExpiredTokens(@Param("now") LocalDateTime now);
-
-    boolean existsByRefreshToken(String refreshToken);
+    void deleteByRefreshTokenEncrypted(String refreshTokenEncrypted);
 }
