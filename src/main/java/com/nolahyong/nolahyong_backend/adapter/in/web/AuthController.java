@@ -1,12 +1,10 @@
 package com.nolahyong.nolahyong_backend.adapter.in.web;
 
 import com.nolahyong.nolahyong_backend.adapter.in.web.dto.*;
-import com.nolahyong.nolahyong_backend.application.service.AuthUseCase;
-import com.nolahyong.nolahyong_backend.application.service.UserUseCase;
-import com.nolahyong.nolahyong_backend.domain.model.User;
+import com.nolahyong.nolahyong_backend.application.port.in.AuthUseCase;
+import com.nolahyong.nolahyong_backend.application.port.in.UserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
