@@ -22,6 +22,9 @@ public class AuthUseCase {
     private final RefreshTokenPort refreshTokenPort;
     private final UserRepository userRepository;
 
+    /**
+     * Login
+     */
     @Transactional
     public TokenResponse socialLogin(SnsLoginRequest request) {
         User user = socialAuthPort.authenticate(
@@ -42,6 +45,9 @@ public class AuthUseCase {
         return new TokenResponse(accessToken, refreshToken, isOnboarded);
     }
 
+    /**
+     * refresh
+     */
     @Transactional
     public TokenResponse refreshTokens(RefreshTokenRequest request) {
         Optional<UserToken> tokenOpt = refreshTokenPort.findByRefreshToken(request.getRefreshToken());
@@ -65,6 +71,9 @@ public class AuthUseCase {
         return new TokenResponse(newAccessToken, newRefreshToken, user.isOnboarded());
     }
 
+    /**
+     * Logout
+     */
     @Transactional
     public void logout(LogoutRequest request) {
         refreshTokenPort.deleteByRefreshToken(request.getRefreshToken());
