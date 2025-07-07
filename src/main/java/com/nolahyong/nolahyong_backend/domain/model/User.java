@@ -33,13 +33,17 @@ public class User {
     @Column(nullable = false, name = "provider_id")
     private String providerId;
 
-    @Column
+    @Column(name = "profile_image")
     private String profileImage; // 프로필 이미지 URL
 
-    @Column
+    @Column(name = "profile_completed")
     private Boolean profileCompleted; // 온보딩 완료 여부
 
     @Column
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
+
+    public boolean isOnboarded() {
+        return Boolean.TRUE.equals(profileCompleted);
+    }
 }

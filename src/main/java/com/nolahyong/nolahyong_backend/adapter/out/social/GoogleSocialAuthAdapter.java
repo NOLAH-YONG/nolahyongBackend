@@ -1,6 +1,7 @@
-package com.nolahyong.nolahyong_backend.application.service.social;
+package com.nolahyong.nolahyong_backend.adapter.out.social;
 
 import com.nolahyong.nolahyong_backend.application.dto.SocialUserInfo;
+import com.nolahyong.nolahyong_backend.application.port.out.SocialAuthUserInfoPort;
 import com.nolahyong.nolahyong_backend.domain.model.enums.Provider;
 import org.json.JSONObject;
 import org.springframework.http.*;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class GoogleAuthService implements SocialAuthProvider {
+public class GoogleSocialAuthAdapter implements SocialAuthUserInfoPort {
 
     private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
     private final RestTemplate restTemplate = new RestTemplate();
