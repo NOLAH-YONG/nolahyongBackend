@@ -49,4 +49,16 @@ public class User {
     public boolean isOnboarded() {
         return Boolean.TRUE.equals(profileCompleted);
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateProfileImage(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl; // null 가능
+    }
+
+    public void removeProfileImage() {
+        this.profileImageUrl = null;
+    }
 }

@@ -1,11 +1,10 @@
 package com.nolahyong.nolahyong_backend.adapter.in.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public class MyPageResponse {
-    private String nickname;
-    private String profileImageUrl;
+/**
+ * 마이페이지 조회 응답 DTO
+ */
+public record MyPageResponse(
+        String nickname,
+        String profileImageUrl
+) {
 }
