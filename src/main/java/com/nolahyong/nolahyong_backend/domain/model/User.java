@@ -34,7 +34,10 @@ public class User {
     private String providerId;
 
     @Column(name = "profile_image")
-    private String profileImage; // 프로필 이미지 URL
+    private String profileImage; // 프로필 이미지
+
+    @Column(name = "profile_image_url;")
+    private String profileImageUrl; // 프로필 이미지 URL
 
     @Column(name = "profile_completed")
     private Boolean profileCompleted; // 온보딩 완료 여부
