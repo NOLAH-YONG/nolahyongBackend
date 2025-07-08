@@ -1,6 +1,7 @@
 package com.nolahyong.nolahyong_backend.application.service;
 
 import com.nolahyong.nolahyong_backend.adapter.in.web.dto.MyPageResponse;
+import com.nolahyong.nolahyong_backend.application.port.in.MyPageUseCase;
 import com.nolahyong.nolahyong_backend.domain.model.User;
 import com.nolahyong.nolahyong_backend.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class MyPageUseCase {
+public class MyPageService implements MyPageUseCase {
 
     private final UserRepository userRepository;
 
