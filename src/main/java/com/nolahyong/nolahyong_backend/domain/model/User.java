@@ -1,7 +1,7 @@
 package com.nolahyong.nolahyong_backend.domain.model;
 
-import com.nolahyong.nolahyong_backend.domain.model.enums.Provider;
 import com.nolahyong.nolahyong_backend.domain.model.enums.AccountStatus;
+import com.nolahyong.nolahyong_backend.domain.model.enums.Provider;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,7 +36,7 @@ public class User {
     @Column(name = "profile_image")
     private String profileImage; // 프로필 이미지
 
-    @Column(name = "profile_image_url;")
+    @Column(name = "profile_image_url")
     private String profileImageUrl; // 프로필 이미지 URL
 
     @Column(name = "profile_completed")
