@@ -80,3 +80,7 @@ springdoc:
 refresh:
   token:
     encryption-key: ${ENCRYPTION_KEY}
+
+custom:
+  image:
+    upload-path: ./uploads/profile
