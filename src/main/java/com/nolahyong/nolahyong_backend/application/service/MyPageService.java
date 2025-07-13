@@ -42,19 +42,19 @@ public class MyPageService implements MyPageUseCase {
 
         user.updateNickname(nickname);
 
-        if (removeImage) {
-            String oldUrl = user.getProfileImageUrl();
-            if (oldUrl != null && !oldUrl.isBlank()) {
-                storageService.delete(oldUrl);
+        boolean hasOldImage = user.getProfileImageUrl() != null && !user.getProfileImageUrl().isBlank();
+
+        if (removeImage || (profileImage != null && !profileImage.isEmpty())) {
+            if (hasOldImage) {
+                storageService.delete(user.getProfileImageUrl());
             }
+        }
+
+        if (removeImage) {
             user.removeProfileImage();
         } else if (profileImage != null && !profileImage.isEmpty()) {
-            String oldUrl = user.getProfileImageUrl();
-            if (oldUrl != null && !oldUrl.isBlank()) {
-                storageService.delete(oldUrl);
-            }
-            String imageUrl = storageService.store(userId, profileImage);
-            user.updateProfileImage(imageUrl);
+            String newUrl = storageService.store(userId, profileImage);
+            user.updateProfileImage(newUrl);
         }
     }
 
